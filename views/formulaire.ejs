@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulaire de l'Opération</title>
@@ -81,6 +82,18 @@
         .logo-container img {
             width: 150px;
         }
+
+        .progress-container {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 30px;
+    background-color: #e0e0e0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
         /* Validation dynamique */
         input.touched:invalid,
@@ -171,22 +184,68 @@
         <label for="libelle">Libellé de l'opération :</label>
         <input type="text" id="libelle" name="libelle" required>
 
+        
         <label for="nature">Nature de type opération :</label>
         <select id="nature" name="nature" required>
-            <option disabled selected value="">-- Choisir une nature --</option>
-            <option>ATD ou SA</option>
-            <option>Appel de Fond</option>
-            <option>Arrêté</option>
-            <option>Autres</option>
-            <option>Virement émis</option>
-            <option>Visa</option>
+          <option disabled selected value="">-- Choisir une nature --</option>
+          <option>ATD ou SA</option>
+          <option>Appel de Fond</option>
+          <option>Arrêté</option>
+          <option>Autres</option>
+          <option>BalanceGIM</option>
+          <option>BalanceONUS</option>
+          <option>BalanceVISA</option>
+          <option>Blocage</option>
+          <option>Bon à payer effet</option>
+          <option>Certification chèque</option>
+          <option>Change manuel</option>
+          <option>Chèque reçu</option>
+          <option>Chèque émis</option>
+          <option>Commission</option>
+          <option>Commission sur état</option>
+          <option>Désactivée</option>
+          <option>Effet reçu</option>
+          <option>Engagement</option>
+          <option>Externe</option>
+          <option>Frais sur produit lié</option>
+          <option>GIM</option>
+          <option>Lissage de compte</option>
+          <option>Mise à disposition de fond</option>
+          <option>MoneticOperation</option>
+          <option>MultiplePrélèvement</option>
+          <option>OnUS</option>
+          <option>Opérations diverses</option>
+          <option>Opérations personnel</option>
+          <option>Paie</option>
+          <option>Placement</option>
+          <option>PreAvisCommission</option>
+          <option>Prélèvement périodique</option>
+          <option>Prélèvement reçu</option>
+          <option>Prélèvement émis</option>
+          <option>Régule</option>
+          <option>RejetProvision</option>
+          <option>RejetViceDeForme</option>
+          <option>Remboursement</option>
+          <option>Retrait espèce</option>
+          <option>SentTransferEngagements</option>
+          <option>Tombée d'échéance</option>
+          <option>Transfert</option>
+          <option>Transfert d'argent</option>
+          <option>Transfert de compte</option>
+          <option>Versement espèce</option>
+          <option>Virement multiple</option>
+          <option>Virement périodique</option>
+          <option>Virement reçu</option>
+          <option>Virement salaire</option>
+          <option>Virement émis</option>
+          <option>Visa</option>
         </select>
-
+        
         <!-- Zone 2 : Paramètres -->
         <h2>⚙️ Paramètres de l'opération</h2>
         <label for="effet">Effet d'opération :</label>
         <select id="effet" name="effet">
-            <option value="">Néant</option>
+            <option disabled selected value="">-- Choisir une nature --</option>
             <option value="od_sans_piece">OD sans pièce</option>
             <option value="od_ristourne">OD ristourne</option>
         </select>
@@ -196,12 +255,14 @@
 
         <label for="signe">Signe de l'opération :</label>
         <select id="signe" name="signe" required>
+            <option disabled selected value="">-- Choisir une nature --</option>
             <option value="credit">Crédit</option>
             <option value="debit">Débit</option>
         </select>
 
         <label for="destination">Destination de l'opération :</label>
         <select id="destination" name="destination" required>
+            <option disabled selected value="">-- Choisir une nature --</option>
             <option value="autre_agence">Autre agence</option>
             <option value="autre_banque">Autre banque</option>
             <option value="meme_agence">Même agence</option>
@@ -209,6 +270,7 @@
 
         <label for="type_impact">Type d'impact :</label>
         <select id="type_impact" name="type_impact" required>
+            <option disabled selected value="">-- Choisir une nature --</option>
             <option value="compte">Compte</option>
             <option value="caisse">Caisse</option>
             <option value="compte_et_caisse">Compte et caisse</option>
@@ -217,6 +279,7 @@
 
         <label for="debit_credit_immediat">Débit/Crédit immédiat :</label>
         <select id="debit_credit_immediat" name="debit_credit_immediat" required>
+            <option disabled selected value="">-- Choisir une option --</option>
             <option value="oui">Oui</option>
             <option value="non">Non</option>
         </select>
@@ -225,18 +288,20 @@
         <h2>📘 Comportement</h2>
         <label for="autoriser_paiement_partiel">Autoriser le paiement partiel :</label>
         <select id="autoriser_paiement_partiel" name="autoriser_paiement_partiel" required>
+            <option disabled selected value="">-- Choisir une option --</option>
             <option value="oui">Oui</option>
             <option value="non">Non</option>
         </select>
 
-        <label for="type_annulation">Type opération d'annulation :</label>
-        <input type="text" id="type_annulation" name="type_annulation">
-
-        <label for="type_rejet">Type opération de rejet :</label>
-        <input type="text" id="type_rejet" name="type_rejet">
-
-        <label for="type_interne_recue">Type opération interne reçue :</label>
-        <input type="text" id="type_interne_recue" name="type_interne_recue">
+        <label for="type_annulation">Type d'opération d'annulation :</label>
+        <input type="text" id="type_annulation" name="type_annulation" placeholder="Néant">
+        
+        <label for="type_rejet">Type d'opération de rejet :</label>
+        <input type="text" id="type_rejet" name="type_rejet" placeholder="Néant">
+        
+        <label for="type_interne_recue">Type d'opération interne reçue :</label>
+        <input type="text" id="type_interne_recue" name="type_interne_recue" placeholder="Néant">
+        
 
         <!-- Zone 4 : Devise -->
         <h2>💱 Devise</h2>
@@ -244,15 +309,153 @@
         <select id="devise" name="devise" required>
             <option disabled selected value="">-- Choisir une devise --</option>
             <option value="ALL">ALL - Toutes devises</option>
-            <option value="TND">TND - Dinar tunisien</option>
-            <option value="USD">USD - Dollar américain</option>
-            <option value="MAD">MAD - Dirham marocain</option>
+<option value="AFN">AFN - Afghani afghan</option>
+<option value="ALL">ALL - Lek albanais</option>
+<option value="DZD">DZD - Dinar algérien</option>
+<option value="AOA">AOA - Kwanza angolais</option>
+<option value="ARS">ARS - Peso argentin</option>
+<option value="AMD">AMD - Dram arménien</option>
+<option value="AWG">AWG - Florin arubéen</option>
+<option value="AUD">AUD - Dollar australien</option>
+<option value="AZN">AZN - Manat azéri</option>
+<option value="BSD">BSD - Dollar bahaméen</option>
+<option value="BHD">BHD - Dinar bahreïni</option>
+<option value="BDT">BDT - Taka bangladais</option>
+<option value="BBD">BBD - Dollar barbadien</option>
+<option value="BYN">BYN - Rouble biélorusse</option>
+<option value="BZD">BZD - Dollar bélizéen</option>
+<option value="BTN">BTN - Ngultrum bhoutanais</option>
+<option value="BOL">BOL - Boliviano bolivien</option>
+<option value="BAM">BAM - Mark convertible bosniaque</option>
+<option value="BWP">BWP - Pula botswanaise</option>
+<option value="BRL">BRL - Real brésilien</option>
+<option value="BND">BND - Dollar brunéien</option>
+<option value="BGN">BGN - Lev bulgare</option>
+<option value="BIF">BIF - Franc burundais</option>
+<option value="KHR">KHR - Riel cambodgien</option>
+<option value="CAD">CAD - Dollar canadien</option>
+<option value="CVE">CVE - Escudo cap-verdien</option>
+<option value="KYD">KYD - Dollar caymanien</option>
+<option value="CLP">CLP - Peso chilien</option>
+<option value="CNY">CNY - Yuan renminbi chinois</option>
+<option value="COP">COP - Peso colombien</option>
+<option value="KMF">KMF - Franc comorien</option>
+<option value="CRC">CRC - Colón costaricien</option>
+<option value="HRK">HRK - Kuna croate</option>
+<option value="CYP">CYP - Livre chypriote</option>
+<option value="CZK">CZK - Couronne tchèque</option>
+<option value="DKK">DKK - Couronne danoise</option>
+<option value="DJF">DJF - Franc djiboutien</option>
+<option value="DOP">DOP - Peso dominicain</option>
+<option value="EGP">EGP - Livre égyptienne</option>
+<option value="ERN">ERN - Nakfa érythréen</option>
+<option value="EEK">EEK - Couronne estonienne</option>
+<option value="EUR">EUR - Euro</option>
+<option value="ETB">ETB - Birr éthiopien</option>
+<option value="FJD">FJD - Dollar fidjien</option>
+<option value="FIM">FIM - Mark finlandais</option>
+<option value="FRF">FRF - Franc français</option>
+<option value="GMD">GMD - Dalasi gambien</option>
+<option value="GEL">GEL - Lari géorgien</option>
+<option value="GHS">GHS - Cedi ghanéen</option>
+<option value="GIP">GIP - Livre de Gibraltar</option>
+<option value="GRD">GRD - Drachme grecque</option>
+<option value="GTQ">GTQ - Quetzal guatémaltèque</option>
+<option value="GNF">GNF - Franc guinéen</option>
+<option value="GYD">GYD - Dollar guyanien</option>
+<option value="HTG">HTG - Gourde haïtienne</option>
+<option value="HNL">HNL - Lempira hondurienne</option>
+<option value="HKD">HKD - Dollar de Hong Kong</option>
+<option value="HUF">HUF - Forint hongrois</option>
+<option value="ISK">ISK - Couronne islandaise</option>
+<option value="INR">INR - Roupie indienne</option>
+<option value="IDR">IDR - Roupie indonésienne</option>
+<option value="IRR">IRR - Rial iranien</option>
+<option value="IQD">IQD - Dinar irakien</option>
+<option value="ILS">ILS - Shekel israélien</option>
+<option value="JMD">JMD - Dollar jamaïcain</option>
+<option value="JPY">JPY - Yen japonais</option>
+<option value="JOR">JOR - Dinar jordanien</option>
+<option value="KZT">KZT - Tenge kazakh</option>
+<option value="KES">KES - Shilling kényan</option>
+<option value="KGS">KGS - Som kirghize</option>
+<option value="LAK">LAK - Kip laotien</option>
+<option value="LVL">LVL - Lats letton</option>
+<option value="LBP">LBP - Livre libanaise</option>
+<option value="LSL">LSL - Loti lesothan</option>
+<option value="LRD">LRD - Dollar libérien</option>
+<option value="LYD">LYD - Dinar libyen</option>
+<option value="LTL">LTL - Litas lituanien</option>
+<option value="MOP">MOP - Pataca macanaise</option>
+<option value="MKD">MKD - Denar macédonien</option>
+<option value="MGA">MGA - Ariary malgache</option>
+<option value="MWK">MWK - Kwacha malawite</option>
+<option value="MYR">MYR - Ringgit malais</option>
+<option value="MUR">MUR - Roupie mauricienne</option>
+<option value="MXN">MXN - Peso mexicain</option>
+<option value="MDL">MDL - Leu moldave</option>
+<option value="MNT">MNT - Tugrik mongol</option>
+<option value="MZN">MZN - Metical mozambicain</option>
+<option value="MMK">MMK - Kyat birman</option>
+<option value="NAD">NAD - Dollar namibien</option>
+<option value="NPR">NPR - Roupie népalaise</option>
+<option value="NLD">NLD - Florin néerlandais</option>
+<option value="NZD">NZD - Dollar néo-zélandais</option>
+<option value="NIO">NIO - Cordoba nicaraguayenne</option>
+<option value="NGN">NGN - Naira nigérian</option>
+<option value="NOK">NOK - Couronne norvégienne</option>
+<option value="OMR">OMR - Rial omanais</option>
+<option value="PKR">PKR - Roupie pakistanaise</option>
+<option value="PAB">PAB - Balboa panaméen</option>
+<option value="PGK">PGK - Kina papou-néo-guinéen</option>
+<option value="PYG">PYG - Guarani paraguayen</option>
+<option value="PEN">PEN - Nouveau sol péruvien</option>
+<option value="PHP">PHP - Peso philippin</option>
+<option value="PLN">PLN - Zloty polonais</option>
+<option value="QAR">QAR - Rial qatari</option>
+<option value="RON">RON - Leu roumain</option>
+<option value="RUB">RUB - Rouble russe</option>
+<option value="RWF">RWF - Franc rwandais</option>
+<option value="SHP">SHP - Livre de Sainte-Hélène</option>
+<option value="SAR">SAR - Riyal saoudien</option>
+<option value="RSD">RSD - Dinar serbe</option>
+<option value="SCR">SCR - Roupie seychelloise</option>
+<option value="SLL">SLL - Leone sierra-léonais</option>
+<option value="SGD">SGD - Dollar de Singapour</option>
+<option value="SKK">SKK - Couronne slovaque</option>
+<option value="SIT">SIT - Tolar slovène</option>
+<option value="SBD">SBD - Dollar salomonais</option>
+<option value="SOS">SOS - Shilling somalien</option>
+<option value="ZAR">ZAR - Rand sud-africain</option>
+<option value="KRW">KRW - Won sud-coréen</option>
+<option value="LKR">LKR - Roupie sri-lankaise</option>
+<option value="SEK">SEK - Couronne suédoise</option>
+<option value="CHF">CHF - Franc suisse</option>
+<option value="SYP">SYP - Livre syrienne</option>
+<option value="TWD">TWD - Nouveau dollar taïwanais</option>
+<option value="THB">THB - Baht thaïlandais</option>
+<option value="TZS">TZS - Shilling tanzanien</option>
+<option value="TTD">TTD - Dollar trinidadien</option>
+<option value="TND">TND - Dinar tunisien</option>
+<option value="UGX">UGX - Shilling ougandais</option>
+<option value="UAH">UAH - Hryvnia ukrainienne</option>
+<option value="AED">AED - Dirham des Émirats arabes unis</option>
+<option value="GBP">GBP - Livre sterling</option>
+<option value="USD">USD - Dollar américain</option>
+<option value="UYU">UYU - Peso uruguayen</option>
+<option value="UZS">UZS - Som ouzbek</option>
+<option value="VND">VND - Dong vietnamien</option>
+<option value="VUV">VUV - Vatu vanuatais</option>
+<option value="YER">YER - Rial yéménite</option>
+ 
+
         </select>
 
         <!-- Zone 5 : TVA -->
         <h2>🧾 Application de la TVA</h2>
         <label for="application_tva">Application TVA :</label>
         <select id="application_tva" name="application_tva" required>
+            <option disabled selected value="">-- Choisir une option --</option>
             <option value="oui">Oui</option>
             <option value="non">Non</option>
         </select>
@@ -272,5 +475,6 @@
         <button type="submit">Soumettre</button>
     </form>
 
+    
 </body>
 </html>

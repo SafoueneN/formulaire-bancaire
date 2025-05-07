@@ -7,6 +7,7 @@ const fs = require('fs');
 const app = express();
 const port = process.env.PORT || 3000; // ✅ nécessaire pour Render
 
+
 // Fonction utilitaire
 const getValue = (val) => (val && val.trim ? val.trim() : 'Néant');
 
@@ -143,7 +144,7 @@ app.post('/submit', (req, res) => {
   doc.fontSize(10)
     .fillColor('#777777')
     .text(
-      `Document généré le ${generationDate} — Direction de l’Organisation et des Référentiels -STB BANK-`,
+      `Document généré le ${generationDate} — Direction de l’Organisation & Référentiels -STB BANK-`,
       50,
       currentY,
       { align: 'center', width: tableWidth }
