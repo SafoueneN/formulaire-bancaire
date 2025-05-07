@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de l'Opération</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f5f5f5;
+        }
+
+        h1, h2 {
+            color: #003366;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 900px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 20px;
+            background-color: #0077cc;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #005fa3;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px auto;
+            max-width: 900px;
+        }
+
+        .progress-bar {
+            height: 25px;
+            background-color: #4CAF50;
+            width: 0%;
+            text-align: center;
+            color: white;
+            line-height: 25px;
+            transition: width 0.3s ease;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            width: 150px;
+        }
+
+        /* Validation dynamique */
+        input.touched:invalid,
+        select.touched:invalid,
+        textarea.touched:invalid {
+            border: 2px solid red;
+        }
+
+        input.touched:valid,
+        select.touched:valid,
+        textarea.touched:valid {
+            border: 2px solid green;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ajout de la classe 'touched' pour validation dynamique
+            document.querySelectorAll('input, select, textarea').forEach(field => {
+                field.addEventListener('blur', () => {
+                    field.classList.add('touched');
+                });
+            });
+
+            // Formatage du code
+            window.formatCode = function(input) {
+                input.value = input.value.toUpperCase().replace(/\s+/g, '');
+            }
+
+            // Confirmation avant soumission
+            const form = document.getElementById('formOperation');
+            form.addEventListener('submit', function (e) {
+                if (!confirm("❓ Voulez-vous vraiment soumettre ce formulaire ?")) {
+                    e.preventDefault();
+                } else {
+                    alert("✅ Formulaire soumis avec succès !");
+                }
+            });
+
+            // Barre de progression
+            const progressBar = document.getElementById('progressBar');
+            const fields = form.querySelectorAll('input, textarea, select');
+
+            function updateProgress() {
+                let filled = 0;
+                fields.forEach(field => {
+                    if (field.type !== "submit" && field.offsetParent !== null) {
+                        if (field.value.trim() !== "") {
+                            filled++;
+                        }
+                    }
+                });
+
+                const percent = Math.round((filled / fields.length) * 100);
+                progressBar.style.width = percent + '%';
+                progressBar.innerText = percent + '%';
+            }
+
+            fields.forEach(field => {
+                field.addEventListener('input', updateProgress);
+                field.addEventListener('change', updateProgress);
+            });
+
+            updateProgress(); // Initialiser au chargement
+        });
+    </script>
+</head>
+<body>
+
+    <div class="logo-container">
+        <img src="https://i.imgur.com/Re1kJmN.jpg" alt="Logo de la Banque">
+    </div>
+
+    <h1 style="text-align:center;">Formulaire de l'Opération</h1>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar">0%</div>
+    </div>
+
+    <form id="formOperation" action="/submit" method="POST">
+
+        <!-- Zone 1 : Informations générales -->
+        <h2>🗂️ Informations générales</h2>
+        <label for="code">Code de l'opération :</label>
+        <input type="text" id="code" name="code" required 
+        oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')">
+ 
+        <label for="libelle">Libellé de l'opération :</label>
+        <input type="text" id="libelle" name="libelle" required>
+
+        <label for="nature">Nature de type opération :</label>
+        <select id="nature" name="nature" required>
+            <option disabled selected value="">-- Choisir une nature --</option>
+            <option>ATD ou SA</option>
+            <option>Appel de Fond</option>
+            <option>Arrêté</option>
+            <option>Autres</option>
+            <option>Virement émis</option>
+            <option>Visa</option>
+        </select>
+
+        <!-- Zone 2 : Paramètres -->
+        <h2>⚙️ Paramètres de l'opération</h2>
+        <label for="effet">Effet d'opération :</label>
+        <select id="effet" name="effet">
+            <option value="">Néant</option>
+            <option value="od_sans_piece">OD sans pièce</option>
+            <option value="od_ristourne">OD ristourne</option>
+        </select>
+
+        <label for="descriptif">Descriptif de l'opération :</label>
+        <textarea id="descriptif" name="descriptif" required></textarea>
+
+        <label for="signe">Signe de l'opération :</label>
+        <select id="signe" name="signe" required>
+            <option value="credit">Crédit</option>
+            <option value="debit">Débit</option>
+        </select>
+
+        <label for="destination">Destination de l'opération :</label>
+        <select id="destination" name="destination" required>
+            <option value="autre_agence">Autre agence</option>
+            <option value="autre_banque">Autre banque</option>
+            <option value="meme_agence">Même agence</option>
+        </select>
+
+        <label for="type_impact">Type d'impact :</label>
+        <select id="type_impact" name="type_impact" required>
+            <option value="compte">Compte</option>
+            <option value="caisse">Caisse</option>
+            <option value="compte_et_caisse">Compte et caisse</option>
+            <option value="gab">Gab</option>
+        </select>
+
+        <label for="debit_credit_immediat">Débit/Crédit immédiat :</label>
+        <select id="debit_credit_immediat" name="debit_credit_immediat" required>
+            <option value="oui">Oui</option>
+            <option value="non">Non</option>
+        </select>
+
+        <!-- Zone 3 : Comportement -->
+        <h2>📘 Comportement</h2>
+        <label for="autoriser_paiement_partiel">Autoriser le paiement partiel :</label>
+        <select id="autoriser_paiement_partiel" name="autoriser_paiement_partiel" required>
+            <option value="oui">Oui</option>
+            <option value="non">Non</option>
+        </select>
+
+        <label for="type_annulation">Type opération d'annulation :</label>
+        <input type="text" id="type_annulation" name="type_annulation">
+
+        <label for="type_rejet">Type opération de rejet :</label>
+        <input type="text" id="type_rejet" name="type_rejet">
+
+        <label for="type_interne_recue">Type opération interne reçue :</label>
+        <input type="text" id="type_interne_recue" name="type_interne_recue">
+
+        <!-- Zone 4 : Devise -->
+        <h2>💱 Devise</h2>
+        <label for="devise">Devise :</label>
+        <select id="devise" name="devise" required>
+            <option disabled selected value="">-- Choisir une devise --</option>
+            <option value="ALL">ALL - Toutes devises</option>
+            <option value="TND">TND - Dinar tunisien</option>
+            <option value="USD">USD - Dollar américain</option>
+            <option value="MAD">MAD - Dirham marocain</option>
+        </select>
+
+        <!-- Zone 5 : TVA -->
+        <h2>🧾 Application de la TVA</h2>
+        <label for="application_tva">Application TVA :</label>
+        <select id="application_tva" name="application_tva" required>
+            <option value="oui">Oui</option>
+            <option value="non">Non</option>
+        </select>
+
+        <!-- Zone 6 : Comptes compatibles -->
+        <h2>🏦 Compatibilité et Responsables</h2>
+        <label for="comptes_compatibles">Nature des comptes compatibles avec cette opération :</label>
+        <textarea id="comptes_compatibles" name="comptes_compatibles" required></textarea>
+
+        <label for="direction">Direction concernée :</label>
+        <input type="text" id="direction" name="direction" required>
+
+        <label for="charge">Chargé :</label>
+        <input type="text" id="charge" name="charge" required>
+
+        <!-- Bouton -->
+        <button type="submit">Soumettre</button>
+    </form>
+
+</body>
+</html>
