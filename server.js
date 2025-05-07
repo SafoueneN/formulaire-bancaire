@@ -3,12 +3,12 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000; // ✅ nécessaire pour Render
 
 // Fonction utilitaire
 const getValue = (val) => (val && val.trim ? val.trim() : 'Néant');
-const logoPath = path.join(__dirname, 'public/images/logo.png');
 
 // Fonction pour dessiner l'en-tête avec le logo centré
 function drawHeader(doc, logoPath) {
@@ -19,7 +19,7 @@ function drawHeader(doc, logoPath) {
 
   if (fs.existsSync(logoPath)) {
     doc.image(logoPath, x, y, { width: logoWidth });
-    doc.moveDown(2); // espace après logo
+    doc.moveDown(2);
   }
 
   doc.font('Helvetica-Bold')
@@ -34,43 +34,41 @@ function drawHeader(doc, logoPath) {
     .strokeColor('#000000')
     .stroke();
 
-  doc.moveDown(2); // Espacement après l'en-tête
+  doc.moveDown(2);
 }
 
-// Configuration
+// Configuration Express
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Route formulaire
+// Route GET pour afficher le formulaire
 app.get('/', (req, res) => {
   res.render('formulaire');
 });
 
-// Soumission formulaire
+// Route POST pour générer et envoyer le PDF
 app.post('/submit', (req, res) => {
   const data = req.body;
   const doc = new PDFDocument({ size: 'A4', margin: 50 });
 
   const operationCode = getValue(data.code).replace(/[^a-zA-Z0-9_-]/g, '_');
-  
   const pdfFilename = `${operationCode || 'inconnu'}.pdf`;
   const pdfPath = path.join(__dirname, 'exports', pdfFilename);
-  const logoPath = path.join(__dirname, 'public/images/logo.jpg'); // Local logo
+  const logoPath = path.join(__dirname, 'public/images/logo.jpg');
 
   if (!fs.existsSync(path.join(__dirname, 'exports'))) {
     fs.mkdirSync(path.join(__dirname, 'exports'));
   }
 
   doc.pipe(fs.createWriteStream(pdfPath));
-
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', `attachment; filename="${pdfFilename}"`);
   doc.pipe(res);
 
   doc.moveDown(2);
-  drawHeader(doc, logoPath); // 🖼️ Logo sur la première page
+  drawHeader(doc, logoPath);
 
   const champs = [
     ["Code de l'opération", data.code],
@@ -110,7 +108,7 @@ app.post('/submit', (req, res) => {
 
     if (currentY + rowHeight > doc.page.height - 80) {
       doc.addPage();
-      drawHeader(doc, logoPath); // 🖼️ Logo sur les pages suivantes
+      drawHeader(doc, logoPath);
       currentY = doc.y;
     }
 
@@ -154,6 +152,7 @@ app.post('/submit', (req, res) => {
   doc.end();
 });
 
+// Lancement du serveur
 app.listen(port, () => {
   console.log(`✅ Serveur démarré : http://localhost:${port}`);
 });
