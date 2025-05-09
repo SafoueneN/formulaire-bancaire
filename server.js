@@ -7,7 +7,6 @@ const fs = require('fs');
 const app = express();
 const port = process.env.PORT || 3000; // ✅ nécessaire pour Render
 
-
 // Fonction utilitaire
 const getValue = (val) => (val && val.trim ? val.trim() : 'Néant');
 
@@ -54,8 +53,10 @@ app.post('/submit', (req, res) => {
   const data = req.body;
   const doc = new PDFDocument({ size: 'A4', margin: 50 });
 
+  // Créez le nom du fichier PDF en concaténant le code et le libellé
   const operationCode = getValue(data.code).replace(/[^a-zA-Z0-9_-]/g, '_');
-  const pdfFilename = `${operationCode || 'inconnu'}.pdf`;
+  const operationLabel = getValue(data.libelle).replace(/[^a-zA-Z0-9_-]/g, '_');
+  const pdfFilename = `${operationCode}_${operationLabel}.pdf`; // Code et libellé concaténés
   const pdfPath = path.join(__dirname, 'exports', pdfFilename);
   const logoPath = path.join(__dirname, 'public/images/logo.jpg');
 
