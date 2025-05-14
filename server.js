@@ -88,6 +88,13 @@ app.post('/submit', (req, res) => {
     ["Type opération interne reçue", data.type_interne_recue],
     ["Devise", data.devise],
     ["Application TVA", data.application_tva],
+    ["Opération qui active le compte", data.activation_compte],
+  ["Réserve opération de blocage", data.reserve_blocage],
+  ["Opération soumise au forçage", data.operation_force],
+  ["Opération soumise à un processus de validation", data.validation_processus],
+  ["Déréservé AGIOS", data.dereserve_agios],
+  ["Règle de conversion", data.regle_conversion],
+  ["Envoi à la SDM en fin de journée", data.envoi_sdm],
     ["Nature des comptes compatibles", data.comptes_compatibles],
     ["Direction concernée", data.direction, true],
     ["Chargé", data.charge, true]

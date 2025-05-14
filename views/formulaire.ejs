@@ -245,10 +245,12 @@
         <h2>⚙️ Paramètres de l'opération</h2>
         <label for="effet">Effet d'opération :</label>
         <select id="effet" name="effet">
-            <option disabled selected value="">-- Choisir une nature --</option>
-            <option value="od_sans_piece">OD sans pièce</option>
-            <option value="od_ristourne">OD ristourne</option>
-        </select>
+    <option disabled selected value="">-- Choisir une nature --</option>
+    <option value="Néant">Néant</option>
+    <option value="od_sans_piece">OD sans pièce</option>
+    <option value="od_ristourne">OD ristourne</option>
+</select>
+
 
         <label for="descriptif">Descriptif de l'opération :</label>
         <textarea id="descriptif" name="descriptif" required></textarea>
@@ -262,11 +264,15 @@
 
         <label for="destination">Destination de l'opération :</label>
         <select id="destination" name="destination" required>
-            <option disabled selected value="">-- Choisir une nature --</option>
-            <option value="autre_agence">Autre agence</option>
-            <option value="autre_banque">Autre banque</option>
-            <option value="meme_agence">Même agence</option>
-        </select>
+    <option disabled selected value="">-- Choisir une nature --</option>
+    <option value="autre_agence">Autre agence</option>
+    <option value="autre_banque">Autre banque</option>
+    <option value="meme_agence">Même agence</option>
+    <option value="autre_agence_autre_banque">Autre agence et Autre banque</option>
+    <option value="autre_agence_meme_agence">Autre agence et Même agence</option>
+    <option value="autre_banque_meme_agence">Autre banque et Même agence</option>
+</select>
+
 
         <label for="type_impact">Type d'impact :</label>
         <select id="type_impact" name="type_impact" required>
@@ -294,13 +300,24 @@
         </select>
 
         <label for="type_annulation">Type d'opération d'annulation :</label>
-        <input type="text" id="type_annulation" name="type_annulation" placeholder="Néant">
-        
-        <label for="type_rejet">Type d'opération de rejet :</label>
-        <input type="text" id="type_rejet" name="type_rejet" placeholder="Néant">
-        
-        <label for="type_interne_recue">Type d'opération interne reçue :</label>
-        <input type="text" id="type_interne_recue" name="type_interne_recue" placeholder="Néant">
+<input list="annulations" id="type_annulation" name="type_annulation" placeholder="Néant">
+<datalist id="annulations">
+  <option value="Néant">
+  <!-- Tu peux ajouter d'autres valeurs ici si besoin -->
+</datalist>
+
+<label for="type_rejet">Type d'opération de rejet :</label>
+<input list="rejets" id="type_rejet" name="type_rejet" placeholder="Néant">
+<datalist id="rejets">
+  <option value="Néant">
+</datalist>
+
+<label for="type_interne_recue">Type d'opération interne reçue :</label>
+<input list="internes" id="type_interne_recue" name="type_interne_recue" placeholder="Néant">
+<datalist id="internes">
+  <option value="Néant">
+</datalist>
+
         
 
         <!-- Zone 4 : Devise -->
@@ -460,13 +477,123 @@
             <option value="non">Non</option>
         </select>
 
+        
+
+<label for="activation_compte">Opération qui active le compte :</label>
+<select id="activation_compte" name="activation_compte">
+  <option disabled selected value="">-- Choisir une option --</option>
+  <option value="oui">Oui</option>
+  <option value="non">Non</option>
+</select>
+
+<label for="reserve_blocage">Réserve opération de blocage :</label>
+<select id="reserve_blocage" name="reserve_blocage">
+  <option disabled selected value="">-- Choisir une option --</option>
+  <option value="oui">Oui</option>
+  <option value="non">Non</option>
+</select>
+
+<label for="operation_force">Opération soumise au forçage :</label>
+<select id="operation_force" name="operation_force">
+  <option disabled selected value="">-- Choisir une option --</option>
+  <option value="oui">Oui</option>
+  <option value="non">Non</option>
+</select>
+
+<label for="validation_processus">Opération soumise à un processus de validation :</label>
+<select id="validation_processus" name="validation_processus">
+  <option disabled selected value="">-- Choisir une option --</option>
+  <option value="oui">Oui</option>
+  <option value="non">Non</option>
+</select>
+
+<label for="dereserve_agios">Déréservé AGIOS :</label>
+<select id="dereserve_agios" name="dereserve_agios">
+  <option disabled selected value="">-- Choisir une option --</option>
+  <option value="oui">Oui</option>
+  <option value="non">Non</option>
+</select>
+
+<label for="regle_conversion">Règle de conversion :</label>
+<select id="regle_conversion" name="regle_conversion">
+  <option disabled selected value="">-- Choisir une option --</option>
+  <option value="oui">Oui</option>
+  <option value="non">Non</option>
+</select>
+
+<label for="envoi_sdm">Envoi à la SDM en fin de journée :</label>
+<select id="envoi_sdm" name="envoi_sdm">
+  <option disabled selected value="">-- Choisir une option --</option>
+  <option value="oui">Oui</option>
+  <option value="non">Non</option>
+</select>
+
+
         <!-- Zone 6 : Comptes compatibles -->
         <h2>🏦 Compatibilité et Responsables</h2>
         <label for="comptes_compatibles">Nature des comptes compatibles avec cette opération :</label>
         <textarea id="comptes_compatibles" name="comptes_compatibles" required></textarea>
 
         <label for="direction">Direction concernée :</label>
-        <input type="text" id="direction" name="direction" required>
+<select id="direction" name="direction" required>
+  <option value="">-- Sélectionner une direction --</option>
+  <option>Cellule Assistance DAD</option>
+  <option>Direction Administration Des Filiales</option>
+  <option>Direction Administration Et Contrôle Réseaux</option>
+  <option>Direction Animation Commerciale Corporate</option>
+  <option>Direction Animation Marche Des Particuliers & TRE</option>
+  <option>Direction Animation Marche Des Professionnels & TPE</option>
+  <option>Direction Backoffice Trésorerie</option>
+  <option>Direction Bâtiments & Entretiens</option>
+  <option>Direction Bien Être Social</option>
+  <option>Direction Caisse Centrale et Télécompensation</option>
+  <option>Direction Canaux Digitaux</option>
+  <option>Direction Centrale Analyse Credit</option>
+  <option>Direction Centrale Analyse Crédit</option>
+  <option>Direction Centrale Bo & Traitement Des Moyens De Paiement Domest</option>
+  <option>Direction Centrale Capitale Humain</option>
+  <option>Direction Centrale Commerciale Corporate</option>
+  <option>Direction Centrale Comptabilité</option>
+  <option>Direction Centrale Contrôle De Gestion</option>
+  <option>Direction Centrale de la Trésorerie</option>
+  <option>Direction Centrale Filiales Et Participation</option>
+  <option>Direction Centrale Gestion Capitale Humain</option>
+  <option>Direction Centrale Global Bancaire & Développement Digital</option>
+  <option>Direction Centrale Infrastructure & Support Systèmes D'Information</option>
+  <option>Direction Centrale Operations Internationales</option>
+  <option>Direction Centrale Réalisation Et Administration Des Crédits</option>
+  <option>Direction Centrale Résolution</option>
+  <option>Direction Centrale Rique Crédit</option>
+  <option>Direction Centrale Risque Opérationnel Et Marché & Contrôle Perm</option>
+  <option>Direction Centrale Réseau</option>
+  <option>Direction Commerce Exterieur</option>
+  <option>Direction Communication & Marketing</option>
+  <option>Direction Contrôle Comptable</option>
+  <option>Direction Contrôle De Gestion</option>
+  <option>Direction Contrôle Des Dépenses</option>
+  <option>Direction Contrôle Permanant</option>
+  <option>Direction Contrôle Reglementaire</option>
+  <option>Direction de Contrôle des Engagements</option>
+  <option>Direction de la Fiscalité</option>
+  <option>Direction De La Qualité</option>
+  <option>Direction Développement Commercial International</option>
+  <option>Direction Developpement Digital</option>
+  <option>Direction Developpement Et Etudes</option>
+  <option>Direction Développement Et Gestion De Carrière</option>
+  <option>Direction Données Analytiques</option>
+  <option>Direction Elaboration Etats Financiers et reporting</option>
+  <option>Direction Engagement Par Signature</option>
+  <option>Direction Evaluation Du Risque Crédit & Reporting</option>
+  <option>Direction Gestion Capitale Humain</option>
+  <option>Direction GGEI</option>
+  <option>Direction Global Bancaire Urbanisé</option>
+  <option>Direction Gouvernance  Deontologie & Controle De La Conformite</option>
+  <option>Direction Infrastructure Digitale</option>
+  <option>Direction AMOA</option>
+  <option>Direction Mobilisation Ressources</option>
+  <option>Direction Moyens De Paiement</option>
+</select>
+
 
         <label for="charge">Chargé :</label>
         <input type="text" id="charge" name="charge" required>
