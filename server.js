@@ -95,7 +95,7 @@ app.post('/submit', (req, res) => {
   ["Déréservé AGIOS", data.dereserve_agios],
   ["Règle de conversion", data.regle_conversion],
   ["Envoi à la SDM en fin de journée", data.envoi_sdm],
-    ["Nature des comptes compatibles", data.comptes_compatibles],
+    ["Nature des comptes compatibles", Array.isArray(data.comptes_compatibles) ? data.comptes_compatibles.join('\n') : getValue(data.comptes_compatibles)],
     ["Direction concernée", data.direction, true],
     ["Chargé", data.charge, true]
   ];

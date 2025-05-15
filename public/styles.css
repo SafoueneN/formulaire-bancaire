@@ -138,3 +138,19 @@ textarea:focus:valid {
     color: white;
     font-weight: bold;
 }
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f8f9fa;
+  font-size: 16px;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: border-color 0.3s ease-in-out;
+}
+
+select:focus {
+  border-color: #007bff;
+  outline: none;
+}
