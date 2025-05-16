@@ -1,717 +1,550 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire de l'Opération</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background-color: #f5f5f5;
-        }
-
-        h1, h2 {
-            color: #003366;
-        }
-
-        form {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            max-width: 900px;
-            margin: auto;
-        }
-
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-
-        button {
-            margin-top: 20px;
-            padding: 12px 20px;
-            background-color: #0077cc;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #005fa3;
-        }
-
-        .progress-container {
-            width: 100%;
-            background-color: #ddd;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 20px auto;
-            max-width: 900px;
-        }
-
-        .progress-bar {
-            height: 25px;
-            background-color: #4CAF50;
-            width: 0%;
-            text-align: center;
-            color: white;
-            line-height: 25px;
-            transition: width 0.3s ease;
-        }
-
-        .logo-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .logo-container img {
-            width: 150px;
-        }
-
-        .progress-container {
-    position: sticky;
-    top: 0;
-    width: 100%;
-    height: 30px;
-    background-color: #e0e0e0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-        /* Validation dynamique */
-        input.touched:invalid,
-        select.touched:invalid,
-        textarea.touched:invalid {
-            border: 2px solid red;
-        }
-
-        input.touched:valid,
-        select.touched:valid,
-        textarea.touched:valid {
-            border: 2px solid green;
-        }
-    </style>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Ajout de la classe 'touched' pour validation dynamique
-            document.querySelectorAll('input, select, textarea').forEach(field => {
-                field.addEventListener('blur', () => {
-                    field.classList.add('touched');
-                });
-            });
-
-            // Formatage du code
-            window.formatCode = function(input) {
-                input.value = input.value.toUpperCase().replace(/\s+/g, '');
-            }
-
-            // Confirmation avant soumission
-            const form = document.getElementById('formOperation');
-            form.addEventListener('submit', function (e) {
-                if (!confirm("❓ Voulez-vous vraiment soumettre ce formulaire ?")) {
-                    e.preventDefault();
-                } else {
-                    alert("✅ Formulaire soumis avec succès !");
-                }
-            });
-
-            // Barre de progression
-            const progressBar = document.getElementById('progressBar');
-            const fields = form.querySelectorAll('input, textarea, select');
-
-            function updateProgress() {
-                let filled = 0;
-                fields.forEach(field => {
-                    if (field.type !== "submit" && field.offsetParent !== null) {
-                        if (field.value.trim() !== "") {
-                            filled++;
-                        }
-                    }
-                });
-
-                const percent = Math.round((filled / fields.length) * 100);
-                progressBar.style.width = percent + '%';
-                progressBar.innerText = percent + '%';
-            }
-
-            fields.forEach(field => {
-                field.addEventListener('input', updateProgress);
-                field.addEventListener('change', updateProgress);
-            });
-
-            updateProgress(); // Initialiser au chargement
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulaire de l'Opération</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background-color: #f5f5f5;
+    }
+    h1, h2 {
+      color: #003366;
+    }
+    form {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      max-width: 900px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+    .progress-container {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 30px;
+      background-color: #e0e0e0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 20px auto;
+      max-width: 900px;
+    }
+    .progress-bar {
+      height: 25px;
+      background-color: #4CAF50;
+      width: 0%;
+      text-align: center;
+      color: white;
+      line-height: 25px;
+      transition: width 0.3s ease;
+    }
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .logo-container img {
+      width: 150px;
+    }
+    input.touched:invalid,
+    select.touched:invalid,
+    textarea.touched:invalid {
+      border: 2px solid red;
+    }
+    input.touched:valid,
+    select.touched:valid,
+    textarea.touched:valid {
+      border: 2px solid green;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('input, select, textarea').forEach(field => {
+        field.addEventListener('blur', () => {
+          field.classList.add('touched');
         });
-    </script>
+      });
+
+      const form = document.getElementById('formOperation');
+      form.addEventListener('submit', function (e) {
+        if (!confirm("❓ Voulez-vous vraiment soumettre ce formulaire ?")) {
+          e.preventDefault();
+        } else {
+          alert("✅ Formulaire soumis avec succès !");
+        }
+      });
+
+      const progressBar = document.getElementById('progressBar');
+      const fields = form.querySelectorAll('input, textarea, select');
+
+      function updateProgress() {
+        let filled = 0;
+        fields.forEach(field => {
+          if (field.type !== "submit" && field.offsetParent !== null && field.value.trim() !== "") {
+            filled++;
+          }
+        });
+        const percent = Math.round((filled / fields.length) * 100);
+        progressBar.style.width = percent + '%';
+        progressBar.innerText = percent + '%';
+      }
+
+      fields.forEach(field => {
+        field.addEventListener('input', updateProgress);
+        field.addEventListener('change', updateProgress);
+      });
+
+      updateProgress();
+    });
+  </script>
 </head>
 <body>
+  <div class="logo-container">
+    <img src="https://i.imgur.com/Re1kJmN.jpg" alt="Logo de la Banque">
+  </div>
 
-    <div class="logo-container">
-        <img src="https://i.imgur.com/Re1kJmN.jpg" alt="Logo de la Banque">
-    </div>
+  <h1 style="text-align:center;">📄 Formulaire de l'Opération</h1>
 
-    <h1 style="text-align:center;">Formulaire de l'Opération</h1>
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar">0%</div>
+  </div>
 
-    <div class="progress-container">
-        <div class="progress-bar" id="progressBar">0%</div>
-    </div>
+  <form id="formOperation" action="/submit" method="POST">
+    <h2>🗂️ Informations générales</h2>
+    <label for="code">Code de l'opération :</label>
+    <input type="text" id="code" name="code" required value="" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')">
 
-    <form id="formOperation" action="/submit" method="POST">
+    <label for="libelle">Libellé de l'opération :</label>
+    <input type="text" id="libelle" name="libelle" required value="<%= data?.libelle || '' %>">
 
-        <!-- Zone 1 : Informations générales -->
-        <h2>🗂️ Informations générales</h2>
-        <label for="code">Code de l'opération :</label>
-        <input type="text" id="code" name="code" required 
-        oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')">
- 
-        <label for="libelle">Libellé de l'opération :</label>
-        <input type="text" id="libelle" name="libelle" required>
+    <label for="nature">Nature de type opération :</label>
+    <select id="nature" name="nature" required>
+      <option disabled value="">-- Choisir une nature --</option>
+      <option selected><%= data?.nature || '' %></option>
+      <option>ATD ou SA</option>
+      <option>Appel de Fond</option>
+      <option>Arrêté</option>
+      <option>Autres</option>
+      <option>BalanceGIM</option>
+      <option>BalanceONUS</option>
+      <option>BalanceVISA</option>
+      <option>Blocage</option>
+      <option>Bon à payer effet</option>
+      <option>Certification chèque</option>
+      <option>Change manuel</option>
+      <option>Chèque reçu</option>
+      <option>Chèque émis</option>
+      <option>Commission</option>
+      <option>Commission sur état</option>
+      <option>Désactivée</option>
+      <option>Effet reçu</option>
+      <option>Engagement</option>
+      <option>Externe</option>
+      <option>Frais sur produit lié</option>
+      <option>GIM</option>
+      <option>Lissage de compte</option>
+      <option>Mise à disposition de fond</option>
+      <option>MoneticOperation</option>
+      <option>MultiplePrélèvement</option>
+      <option>OnUS</option>
+      <option>Opérations diverses</option>
+      <option>Opérations personnel</option>
+      <option>Paie</option>
+      <option>Placement</option>
+      <option>PreAvisCommission</option>
+      <option>Prélèvement périodique</option>
+      <option>Prélèvement reçu</option>
+      <option>Prélèvement émis</option>
+      <option>Régule</option>
+      <option>RejetProvision</option>
+      <option>RejetViceDeForme</option>
+      <option>Remboursement</option>
+      <option>Retrait espèce</option>
+      <option>SentTransferEngagements</option>
+      <option>Tombée d'échéance</option>
+      <option>Transfert</option>
+      <option>Transfert d'argent</option>
+      <option>Transfert de compte</option>
+      <option>Versement espèce</option>
+      <option>Virement multiple</option>
+      <option>Virement périodique</option>
+      <option>Virement reçu</option>
+      <option>Virement salaire</option>
+      <option>Virement émis</option>
+      <option>Visa</option>
+    </select>
 
-        
-        <label for="nature">Nature de type opération :</label>
-        <select id="nature" name="nature" required>
-          <option disabled selected value="">-- Choisir une nature --</option>
-          <option>ATD ou SA</option>
-          <option>Appel de Fond</option>
-          <option>Arrêté</option>
-          <option>Autres</option>
-          <option>BalanceGIM</option>
-          <option>BalanceONUS</option>
-          <option>BalanceVISA</option>
-          <option>Blocage</option>
-          <option>Bon à payer effet</option>
-          <option>Certification chèque</option>
-          <option>Change manuel</option>
-          <option>Chèque reçu</option>
-          <option>Chèque émis</option>
-          <option>Commission</option>
-          <option>Commission sur état</option>
-          <option>Désactivée</option>
-          <option>Effet reçu</option>
-          <option>Engagement</option>
-          <option>Externe</option>
-          <option>Frais sur produit lié</option>
-          <option>GIM</option>
-          <option>Lissage de compte</option>
-          <option>Mise à disposition de fond</option>
-          <option>MoneticOperation</option>
-          <option>MultiplePrélèvement</option>
-          <option>OnUS</option>
-          <option>Opérations diverses</option>
-          <option>Opérations personnel</option>
-          <option>Paie</option>
-          <option>Placement</option>
-          <option>PreAvisCommission</option>
-          <option>Prélèvement périodique</option>
-          <option>Prélèvement reçu</option>
-          <option>Prélèvement émis</option>
-          <option>Régule</option>
-          <option>RejetProvision</option>
-          <option>RejetViceDeForme</option>
-          <option>Remboursement</option>
-          <option>Retrait espèce</option>
-          <option>SentTransferEngagements</option>
-          <option>Tombée d'échéance</option>
-          <option>Transfert</option>
-          <option>Transfert d'argent</option>
-          <option>Transfert de compte</option>
-          <option>Versement espèce</option>
-          <option>Virement multiple</option>
-          <option>Virement périodique</option>
-          <option>Virement reçu</option>
-          <option>Virement salaire</option>
-          <option>Virement émis</option>
-          <option>Visa</option>
-        </select>
-        
-        <!-- Zone 2 : Paramètres -->
-        <h2>⚙️ Paramètres de l'opération</h2>
-        <select name="effet_operation">
-  <option disabled selected value="">-- Choisir une nature --</option>
+    <h2>⚙️ Paramètres</h2>
+<label for="effet">Effet d'opération :</label>
+<select id="effet" name="effet" required>
+  <option disabled value="">-- Choisir une nature --</option>
+  <% if (data?.effet) { %>
+    <option selected><%= data.effet %></option>
+  <% } %>
+  <option>Amende</option>
+  <option>Annulation</option>
+  <option>Blocage</option>
+  <option>Commission</option>
+  <option>Extourne</option>
+  <option>Intérêt</option>
+  <option>OD BOTD</option>
+  <option>OD Banque à Domicile</option>
+  <option>OD CCH</option>
+  <option>OD DCC</option>
+  <option>OD DCCM</option>
+  <option>OD DEPS</option>
+  <option>OD DGTB</option>
+  <option>OD DSS</option>
+  <option>OD DSSAF</option>
+  <option>OD Emis avec pièce</option>
+  <option>OD Emis avec pièce avec blocage</option>
+  <option>OD OPA</option>
+  <option>OD OPD</option>
+  <option>OD Reçu avec pièce avec blocage</option>
+  <option>OD Reçus avec pièce</option>
+  <option>OD Ristourne</option>
+  <option>OD Règlement sans pièce</option>
+  <option>OD SERVICE SOCIAL</option>
+  <option>OD TELECOMPENSATION</option>
+  <option>OD TrTnd</option>
+  <option>OD sans pièce</option>
+  <option>ODBOOfficeTresoTD</option>
+  <option>ODBourse</option>
+  <option>ODCde</option>
+  <option>ODCtx</option>
+  <option>ODECommerce</option>
+  <option>ODFilialeParticipation</option>
+  <option>ODGarantie</option>
+  <option>ODMmdinars</option>
+  <option>ODMobilePayment</option>
+  <option>ODMonetic</option>
+  <option>ODPaymentCash</option>
+  <option>ODPension</option>
+  <option>ODRde</option>
+  <option>ODRdi</option>
+  <option>ODCredoc</option>
+  <option>ODdrdsc</option>
+  <option>ODreg</option>
+  <option>OdChargeBack</option>
+  <option>OdImpactComptable</option>
+  <option>Opposition</option>
+  <option>Rejet</option>
+  <option>Représentation</option>
+  <option>Néant</option>
+</select>
+
+
+<label for="descriptif">Descriptif :</label>
+<textarea id="descriptif" name="descriptif"><%= data?.descriptif || '' %></textarea>
+
+<label for="signe">Signe :</label>
+<select id="signe" name="signe">
+  <option value="">-- Choisir --</option>
+  <option value="credit" <%= data?.signe === 'credit' ? 'selected' : '' %>>Crédit</option>
+  <option value="debit" <%= data?.signe === 'debit' ? 'selected' : '' %>>Débit</option>
+</select>
+
+<label for="destination">Destination de l'opération :</label>
+<select id="destination" name="destination" required>
+  <option disabled value="">-- Choisir une nature --</option>
+  <% if (data?.destination) { %>
+    <option selected><%= data.destination %></option>
+  <% } %>
   <option value="Néant">Néant</option>
-  <option value="amende">Amende</option>
-  <option value="annulation">Annulation</option>
-  <option value="blocage">Blocage</option>
-  <option value="commission">Commission</option>
-  <option value="extourne">Extourne</option>
-  <option value="interet">Intérêt</option>
-  <option value="od_botd">OD BOTD</option>
-  <option value="od_banque_a_domicile">OD Banque à Domicile</option>
-  <option value="od_cch">OD CCH</option>
-  <option value="od_dcc">OD DCC</option>
-  <option value="od_dccm">OD DCCM</option>
-  <option value="od_deps">OD DEPS</option>
-  <option value="od_dgtb">OD DGTB</option>
-  <option value="od_dss">OD DSS</option>
-  <option value="od_dssaf">OD DSSAF</option>
-  <option value="od_emis_avec_piece">OD Emis avec pièce</option>
-  <option value="od_emis_avec_piece_avec_blocage">OD Emis avec pièce avec blocage</option>
-  <option value="od_opa">OD OPA</option>
-  <option value="od_opd">OD OPD</option>
-  <option value="od_recu_avec_piece_avec_blocage">OD Reçu avec pièce avec blocage</option>
-  <option value="od_recus_avec_piece">OD Reçus avec pièce</option>
-  <option value="od_ristourne">OD Ristourne</option>
-  <option value="od_reglement_sans_piece">OD Règlement sans pièce</option>
-  <option value="od_service_social">OD SERVICE SOCIAL</option>
-  <option value="od_telecompensation">OD TELECOMPENSATION</option>
-  <option value="od_trtnd">OD TrTnd</option>
-  <option value="od_sans_piece">OD sans pièce</option>
-  <option value="odbofficetresotd">ODBOOfficeTresoTD</option>
-  <option value="od_bourse">ODBourse</option>
-  <option value="od_cde">ODCde</option>
-  <option value="od_ctx">ODCtx</option>
-  <option value="od_ecommerce">ODECommerce</option>
-  <option value="od_filiale_participation">ODFilialeParticipation</option>
-  <option value="od_garantie">ODGarantie</option>
-  <option value="od_mmdinars">ODMmdinars</option>
-  <option value="od_mobile_payment">ODMobilePayment</option>
-  <option value="od_monetique">ODMonetic</option>
-  <option value="od_payment_cash">ODPaymentCash</option>
-  <option value="od_pension">ODPension</option>
-  <option value="od_rde">ODRde</option>
-  <option value="od_rdi">ODRdi</option>
-  <option value="od_credoc">ODCredoc</option>
-  <option value="od_drds">ODdrdsc</option>
-  <option value="od_reg">ODreg</option>
-  <option value="od_chargeback">OdChargeBack</option>
-  <option value="od_impact_comptable">OdImpactComptable</option>
-  <option value="opposition">Opposition</option>
-  <option value="rejet">Rejet</option>
-  <option value="representation">Représentation</option>
+  <option value="Autre agence">Autre agence</option>
+  <option value="Autre banque">Autre banque</option>
+  <option value="Même agence">Même agence</option>
 </select>
 
 
-
-        <label for="descriptif">Descriptif de l'opération :</label>
-        <textarea id="descriptif" name="descriptif" required></textarea>
-
-        <label for="signe">Signe de l'opération :</label>
-        <select id="signe" name="signe" required>
-            <option disabled selected value="">-- Choisir une nature --</option>
-            <option value="credit">Crédit</option>
-            <option value="debit">Débit</option>
-        </select>
-
-        <label for="destination">Destination de l'opération :</label>
-        <select id="destination" name="destination" required>
-    <option disabled selected value="">-- Choisir une nature --</option>
-    <option value="Néant">Néant</option>
-    <option value="autre_agence">Autre agence</option>
-    <option value="autre_banque">Autre banque</option>
-    <option value="meme_agence">Même agence</option>
+<label for="type_impact">Type d'impact :</label>
+<select id="type_impact" name="type_impact" required>
+  <option disabled value="">-- Choisir une nature --</option>
+  <% if (data?.type_impact) { %>
+    <option selected><%= data.type_impact %></option>
+  <% } %>
+  <option value="Néant">Néant</option>
+  <option value="Compte">Compte</option>
+  <option value="Caisse">Caisse</option>
+  <option value="Compte et caisse">Compte et caisse</option>
+  <option value="Gab">Gab</option>
+  <option value="Rien à faire">Rien à faire</option>
 </select>
 
 
-        <label for="type_impact">Type d'impact :</label>
-        <select id="type_impact" name="type_impact" required>
-            <option disabled selected value="">-- Choisir une nature --</option>
-            <option value="Néant">Néant</option>
-            <option value="compte">Compte</option>
-            <option value="caisse">Caisse</option>
-            <option value="compte_et_caisse">Compte et caisse</option>
-            <option value="gab">Gab</option>
-            <option value="Rien à faire">Rien à faire</option>
-        </select>
+<label for="debit_credit_immediat">Débit/Crédit immédiat :</label>
+<select id="debit_credit_immediat" name="debit_credit_immediat">
+  <option value="">-- Choisir --</option>
+  <option value="oui" <%= data?.debit_credit_immediat === 'oui' ? 'selected' : '' %>>Oui</option>
+  <option value="non" <%= data?.debit_credit_immediat === 'non' ? 'selected' : '' %>>Non</option>
+</select>
 
-        <label for="debit_credit_immediat">Débit/Crédit immédiat :</label>
-        <select id="debit_credit_immediat" name="debit_credit_immediat" required>
-            <option disabled selected value="">-- Choisir une option --</option>
-            <option value="oui">Oui</option>
-            <option value="non">Non</option>
-        </select>
+<h2>📘 Comportement</h2>
+<label for="Autoriser paiement partiel">Autoriser paiement partiel :</label>
+<select id="autoriser_paiement_partiel" name="autoriser_paiement_partiel">
+  <option value="">-- Choisir --</option>
+  <option value="oui" <%= data?.autoriser_paiement_partiel === 'oui' ? 'selected' : '' %>>Oui</option>
+  <option value="non" <%= data?.autoriser_paiement_partiel === 'non' ? 'selected' : '' %>>Non</option>
+</select>
 
-        <!-- Zone 3 : Comportement -->
-        <h2>📘 Comportement</h2>
-        <label for="autoriser_paiement_partiel">Autoriser le paiement partiel :</label>
-        <select id="autoriser_paiement_partiel" name="autoriser_paiement_partiel" required>
-            <option disabled selected value="">-- Choisir une option --</option>
-            <option value="oui">Oui</option>
-            <option value="non">Non</option>
-        </select>
+<label for="type_annulation">Type d'annulation :</label>
+<input type="text" id="type_annulation" name="type_annulation" value="<%= data?.type_annulation || '' %>">
 
-        <label for="type_annulation">Type d'opération d'annulation :</label>
-<input list="annulations" id="type_annulation" name="type_annulation" placeholder="Néant">
-<datalist id="annulations">
-  <option value="Néant">
-  <!-- Tu peux ajouter d'autres valeurs ici si besoin -->
-</datalist>
+<label for="type_rejet">Type de rejet :</label>
+<input type="text" id="type_rejet" name="type_rejet" value="<%= data?.type_rejet || '' %>">
 
-<label for="type_rejet">Type d'opération de rejet :</label>
-<input list="rejets" id="type_rejet" name="type_rejet" placeholder="Néant">
-<datalist id="rejets">
-  <option value="Néant">
-</datalist>
+<label for="type_interne_recue">Type interne reçue :</label>
+<input type="text" id="type_interne_recue" name="type_interne_recue" value="<%= data?.type_interne_recue || '' %>">
 
-<label for="type_interne_recue">Type d'opération interne reçue :</label>
-<input list="internes" id="type_interne_recue" name="type_interne_recue" placeholder="Néant">
-<datalist id="internes">
-  <option value="Néant">
-</datalist>
+<h2>💱 Devise</h2>
+<label for="devise">Devise :</label>
+<select id="devise" name="devise" required>
+  <option disabled value="">-- Choisir une devise --</option>
+  <% if (data?.devise) { %>
+    <option selected><%= data.devise %></option>
+  <% } %>
+  <option value="ALL">ALL - Toutes devises</option>
+  <option value="AFN">AFN - Afghani afghan</option>
+  <option value="DZD">DZD - Dinar algérien</option>
+  <option value="AOA">AOA - Kwanza angolais</option>
+  <option value="ARS">ARS - Peso argentin</option>
+  <option value="AMD">AMD - Dram arménien</option>
+  <option value="AWG">AWG - Florin arubéen</option>
+  <option value="AUD">AUD - Dollar australien</option>
+  <option value="AZN">AZN - Manat azéri</option>
+  <option value="BSD">BSD - Dollar bahaméen</option>
+  <option value="BHD">BHD - Dinar bahreïni</option>
+  <option value="BDT">BDT - Taka bangladais</option>
+  <option value="BBD">BBD - Dollar barbadien</option>
+  <option value="TND">TND - Dinar tunisien</option>
+  <option value="USD">USD - Dollar américain</option>
+  <option value="EUR">EUR - Euro</option>
+</select>
 
-        
+<h2>🧾 TVA et autres options</h2>
+<label for="application_tva">TVA appliquée :</label>
+<select id="application_tva" name="application_tva">
+  <option value="">-- Choisir --</option>
+  <option value="oui" <%= data?.application_tva === 'oui' ? 'selected' : '' %>>Oui</option>
+  <option value="non" <%= data?.application_tva === 'non' ? 'selected' : '' %>>Non</option>
+</select>
 
-        <!-- Zone 4 : Devise -->
-        <h2>💱 Devise</h2>
-        <label for="devise">Devise :</label>
-        <select id="devise" name="devise" required>
-            <option disabled selected value="">-- Choisir une devise --</option>
-            <option value="ALL">ALL - Toutes devises</option>
-<option value="AFN">AFN - Afghani afghan</option>
-<option value="ALL">ALL - Lek albanais</option>
-<option value="DZD">DZD - Dinar algérien</option>
-<option value="AOA">AOA - Kwanza angolais</option>
-<option value="ARS">ARS - Peso argentin</option>
-<option value="AMD">AMD - Dram arménien</option>
-<option value="AWG">AWG - Florin arubéen</option>
-<option value="AUD">AUD - Dollar australien</option>
-<option value="AZN">AZN - Manat azéri</option>
-<option value="BSD">BSD - Dollar bahaméen</option>
-<option value="BHD">BHD - Dinar bahreïni</option>
-<option value="BDT">BDT - Taka bangladais</option>
-<option value="BBD">BBD - Dollar barbadien</option>
-<option value="BYN">BYN - Rouble biélorusse</option>
-<option value="BZD">BZD - Dollar bélizéen</option>
-<option value="BTN">BTN - Ngultrum bhoutanais</option>
-<option value="BOL">BOL - Boliviano bolivien</option>
-<option value="BAM">BAM - Mark convertible bosniaque</option>
-<option value="BWP">BWP - Pula botswanaise</option>
-<option value="BRL">BRL - Real brésilien</option>
-<option value="BND">BND - Dollar brunéien</option>
-<option value="BGN">BGN - Lev bulgare</option>
-<option value="BIF">BIF - Franc burundais</option>
-<option value="KHR">KHR - Riel cambodgien</option>
-<option value="CAD">CAD - Dollar canadien</option>
-<option value="CVE">CVE - Escudo cap-verdien</option>
-<option value="KYD">KYD - Dollar caymanien</option>
-<option value="CLP">CLP - Peso chilien</option>
-<option value="CNY">CNY - Yuan renminbi chinois</option>
-<option value="COP">COP - Peso colombien</option>
-<option value="KMF">KMF - Franc comorien</option>
-<option value="CRC">CRC - Colón costaricien</option>
-<option value="HRK">HRK - Kuna croate</option>
-<option value="CYP">CYP - Livre chypriote</option>
-<option value="CZK">CZK - Couronne tchèque</option>
-<option value="DKK">DKK - Couronne danoise</option>
-<option value="DJF">DJF - Franc djiboutien</option>
-<option value="DOP">DOP - Peso dominicain</option>
-<option value="EGP">EGP - Livre égyptienne</option>
-<option value="ERN">ERN - Nakfa érythréen</option>
-<option value="EEK">EEK - Couronne estonienne</option>
-<option value="EUR">EUR - Euro</option>
-<option value="ETB">ETB - Birr éthiopien</option>
-<option value="FJD">FJD - Dollar fidjien</option>
-<option value="FIM">FIM - Mark finlandais</option>
-<option value="FRF">FRF - Franc français</option>
-<option value="GMD">GMD - Dalasi gambien</option>
-<option value="GEL">GEL - Lari géorgien</option>
-<option value="GHS">GHS - Cedi ghanéen</option>
-<option value="GIP">GIP - Livre de Gibraltar</option>
-<option value="GRD">GRD - Drachme grecque</option>
-<option value="GTQ">GTQ - Quetzal guatémaltèque</option>
-<option value="GNF">GNF - Franc guinéen</option>
-<option value="GYD">GYD - Dollar guyanien</option>
-<option value="HTG">HTG - Gourde haïtienne</option>
-<option value="HNL">HNL - Lempira hondurienne</option>
-<option value="HKD">HKD - Dollar de Hong Kong</option>
-<option value="HUF">HUF - Forint hongrois</option>
-<option value="ISK">ISK - Couronne islandaise</option>
-<option value="INR">INR - Roupie indienne</option>
-<option value="IDR">IDR - Roupie indonésienne</option>
-<option value="IRR">IRR - Rial iranien</option>
-<option value="IQD">IQD - Dinar irakien</option>
-<option value="ILS">ILS - Shekel israélien</option>
-<option value="JMD">JMD - Dollar jamaïcain</option>
-<option value="JPY">JPY - Yen japonais</option>
-<option value="JOR">JOR - Dinar jordanien</option>
-<option value="KZT">KZT - Tenge kazakh</option>
-<option value="KES">KES - Shilling kényan</option>
-<option value="KGS">KGS - Som kirghize</option>
-<option value="LAK">LAK - Kip laotien</option>
-<option value="LVL">LVL - Lats letton</option>
-<option value="LBP">LBP - Livre libanaise</option>
-<option value="LSL">LSL - Loti lesothan</option>
-<option value="LRD">LRD - Dollar libérien</option>
-<option value="LYD">LYD - Dinar libyen</option>
-<option value="LTL">LTL - Litas lituanien</option>
-<option value="MOP">MOP - Pataca macanaise</option>
-<option value="MKD">MKD - Denar macédonien</option>
-<option value="MGA">MGA - Ariary malgache</option>
-<option value="MWK">MWK - Kwacha malawite</option>
-<option value="MYR">MYR - Ringgit malais</option>
-<option value="MUR">MUR - Roupie mauricienne</option>
-<option value="MXN">MXN - Peso mexicain</option>
-<option value="MDL">MDL - Leu moldave</option>
-<option value="MNT">MNT - Tugrik mongol</option>
-<option value="MZN">MZN - Metical mozambicain</option>
-<option value="MMK">MMK - Kyat birman</option>
-<option value="NAD">NAD - Dollar namibien</option>
-<option value="NPR">NPR - Roupie népalaise</option>
-<option value="NLD">NLD - Florin néerlandais</option>
-<option value="NZD">NZD - Dollar néo-zélandais</option>
-<option value="NIO">NIO - Cordoba nicaraguayenne</option>
-<option value="NGN">NGN - Naira nigérian</option>
-<option value="NOK">NOK - Couronne norvégienne</option>
-<option value="OMR">OMR - Rial omanais</option>
-<option value="PKR">PKR - Roupie pakistanaise</option>
-<option value="PAB">PAB - Balboa panaméen</option>
-<option value="PGK">PGK - Kina papou-néo-guinéen</option>
-<option value="PYG">PYG - Guarani paraguayen</option>
-<option value="PEN">PEN - Nouveau sol péruvien</option>
-<option value="PHP">PHP - Peso philippin</option>
-<option value="PLN">PLN - Zloty polonais</option>
-<option value="QAR">QAR - Rial qatari</option>
-<option value="RON">RON - Leu roumain</option>
-<option value="RUB">RUB - Rouble russe</option>
-<option value="RWF">RWF - Franc rwandais</option>
-<option value="SHP">SHP - Livre de Sainte-Hélène</option>
-<option value="SAR">SAR - Riyal saoudien</option>
-<option value="RSD">RSD - Dinar serbe</option>
-<option value="SCR">SCR - Roupie seychelloise</option>
-<option value="SLL">SLL - Leone sierra-léonais</option>
-<option value="SGD">SGD - Dollar de Singapour</option>
-<option value="SKK">SKK - Couronne slovaque</option>
-<option value="SIT">SIT - Tolar slovène</option>
-<option value="SBD">SBD - Dollar salomonais</option>
-<option value="SOS">SOS - Shilling somalien</option>
-<option value="ZAR">ZAR - Rand sud-africain</option>
-<option value="KRW">KRW - Won sud-coréen</option>
-<option value="LKR">LKR - Roupie sri-lankaise</option>
-<option value="SEK">SEK - Couronne suédoise</option>
-<option value="CHF">CHF - Franc suisse</option>
-<option value="SYP">SYP - Livre syrienne</option>
-<option value="TWD">TWD - Nouveau dollar taïwanais</option>
-<option value="THB">THB - Baht thaïlandais</option>
-<option value="TZS">TZS - Shilling tanzanien</option>
-<option value="TTD">TTD - Dollar trinidadien</option>
-<option value="TND">TND - Dinar tunisien</option>
-<option value="UGX">UGX - Shilling ougandais</option>
-<option value="UAH">UAH - Hryvnia ukrainienne</option>
-<option value="AED">AED - Dirham des Émirats arabes unis</option>
-<option value="GBP">GBP - Livre sterling</option>
-<option value="USD">USD - Dollar américain</option>
-<option value="UYU">UYU - Peso uruguayen</option>
-<option value="UZS">UZS - Som ouzbek</option>
-<option value="VND">VND - Dong vietnamien</option>
-<option value="VUV">VUV - Vatu vanuatais</option>
-<option value="YER">YER - Rial yéménite</option>
- 
-
-        </select>
-
-        <!-- Zone 5 : TVA -->
-        <h2>🧾 Application de la TVA</h2>
-        <label for="application_tva">Application TVA :</label>
-        <select id="application_tva" name="application_tva" required>
-            <option disabled selected value="">-- Choisir une option --</option>
-            <option value="oui">Oui</option>
-            <option value="non">Non</option>
-        </select>
-
-        
-
-<label for="activation_compte">Opération qui active le compte :</label>
+<label for="activation_compte">Activation du compte :</label>
 <select id="activation_compte" name="activation_compte">
-  <option disabled selected value="">-- Choisir une option --</option>
-  <option value="oui">Oui</option>
-  <option value="non">Non</option>
+  <option value="">-- Choisir --</option>
+  <option value="oui" <%= data?.activation_compte === 'oui' ? 'selected' : '' %>>Oui</option>
+  <option value="non" <%= data?.activation_compte === 'non' ? 'selected' : '' %>>Non</option>
 </select>
 
-<label for="reserve_blocage">Réserve opération de blocage :</label>
+<label for="reserve_blocage">Réserve blocage :</label>
 <select id="reserve_blocage" name="reserve_blocage">
-  <option disabled selected value="">-- Choisir une option --</option>
-  <option value="oui">Oui</option>
-  <option value="non">Non</option>
+  <option value="">-- Choisir --</option>
+  <option value="oui" <%= data?.reserve_blocage === 'oui' ? 'selected' : '' %>>Oui</option>
+  <option value="non" <%= data?.reserve_blocage === 'non' ? 'selected' : '' %>>Non</option>
 </select>
 
-<label for="operation_force">Opération soumise au forçage :</label>
+<label for="operation_force">Forçage :</label>
 <select id="operation_force" name="operation_force">
-  <option disabled selected value="">-- Choisir une option --</option>
-  <option value="oui">Oui</option>
-  <option value="non">Non</option>
-</select>
-
-<label for="validation_processus">Opération soumise à un processus de validation :</label>
-<select id="validation_processus" name="validation_processus">
-  <option disabled selected value="">-- Choisir une option --</option>
-  <option value="oui">Oui</option>
-  <option value="non">Non</option>
+  <option value="">-- Choisir --</option>
+  <option value="oui" <%= data?.operation_force === 'oui' ? 'selected' : '' %>>Oui</option>
+  <option value="non" <%= data?.operation_force === 'non' ? 'selected' : '' %>>Non</option>
 </select>
 
 <label for="dereserve_agios">Déréservé AGIOS :</label>
 <select id="dereserve_agios" name="dereserve_agios">
-  <option disabled selected value="">-- Choisir une option --</option>
-  <option value="oui">Oui</option>
-  <option value="non">Non</option>
+  <option value="">-- Choisir --</option>
+  <option value="oui" <%= data?.dereserve_agios === 'oui' ? 'selected' : '' %>>Oui</option>
+  <option value="non" <%= data?.dereserve_agios === 'non' ? 'selected' : '' %>>Non</option>
 </select>
 
 <label for="regle_conversion">Règle de conversion :</label>
 <select id="regle_conversion" name="regle_conversion">
-  <option disabled selected value="">-- Choisir une option --</option>
-  <option value="oui">Oui</option>
-  <option value="non">Non</option>
+  <option value="">-- Choisir --</option>
+  <option value="oui" <%= data?.regle_conversion === 'oui' ? 'selected' : '' %>>Oui</option>
+  <option value="non" <%= data?.regle_conversion === 'non' ? 'selected' : '' %>>Non</option>
 </select>
 
-<label for="envoi_sdm">Envoi à la SDM en fin de journée :</label>
+<label for="envoi_sdm">Envoi SDM :</label>
 <select id="envoi_sdm" name="envoi_sdm">
-  <option disabled selected value="">-- Choisir une option --</option>
-  <option value="oui">Oui</option>
-  <option value="non">Non</option>
+  <option value="">-- Choisir --</option>
+  <option value="oui" <%= data?.envoi_sdm === 'oui' ? 'selected' : '' %>>Oui</option>
+  <option value="non" <%= data?.envoi_sdm === 'non' ? 'selected' : '' %>>Non</option>
 </select>
 
+<h2>🏦 Compatibilité</h2>
 
-        <!-- Zone 6 : Comptes compatibles -->
-        <h2>🏦 Compatibilité et Responsables</h2>
-        <label for="comptes_compatibles">Nature des comptes compatibles avec cette opération :</label>
+<label for="comptes_compatibles">Nature des comptes compatibles avec cette opération :</label>
 <select id="comptes_compatibles" name="comptes_compatibles[]" multiple required>
+  <% const selectedComptes = data?.comptes_compatibles || []; %>
+
   <optgroup label="Comptes en dinars">
-    <option value="PAAA01">PAAA01 - Compte de chèque</option>
-    <option value="PAAA02">PAAA02 - Compte de dépôt études</option>
-    <option value="PAAA04">PAAA04 - Compte courant</option>
-    <option value="PAAA06">PAAA06 - Compte avance acquéreur</option>
-    <option value="PAAA09">PAAA09 - Compte placement en dinar</option>
-    <option value="PAAA10">PAAA10 - Société en formation - dinar</option>
-    <option value="PAAA11">PAAA11 - Augmentation capital - dinar</option>
+    <option value="PAAA01" <%= selectedComptes.includes('PAAA01') ? 'selected' : '' %>>PAAA01 - Compte de chèque</option>
+    <option value="PAAA02" <%= selectedComptes.includes('PAAA02') ? 'selected' : '' %>>PAAA02 - Compte de dépôt études</option>
+    <option value="PAAA04" <%= selectedComptes.includes('PAAA04') ? 'selected' : '' %>>PAAA04 - Compte courant</option>
+    <option value="PAAA06" <%= selectedComptes.includes('PAAA06') ? 'selected' : '' %>>PAAA06 - Compte avance acquéreur</option>
+    <option value="PAAA09" <%= selectedComptes.includes('PAAA09') ? 'selected' : '' %>>PAAA09 - Compte placement en dinar</option>
+    <option value="PAAA10" <%= selectedComptes.includes('PAAA10') ? 'selected' : '' %>>PAAA10 - Société en formation - dinar</option>
+    <option value="PAAA11" <%= selectedComptes.includes('PAAA11') ? 'selected' : '' %>>PAAA11 - Augmentation capital - dinar</option>
   </optgroup>
 
   <optgroup label="Comptes non résidents">
-    <option value="PAAB01">PAAB01 - Compte d’attente</option>
-    <option value="PAAB02">PAAB02 - Compte capital</option>
-    <option value="PAAB03">PAAB03 - Compte intérieur</option>
-    <option value="PAAB04">PAAB04 - Compte spécial</option>
-    <option value="PAAB05">PAAB05 - Compte spécial emprunt</option>
-    <option value="PAAB06">PAAB06 - Non résidents Libyens (dinar)</option>
+    <option value="PAAB01" <%= selectedComptes.includes('PAAB01') ? 'selected' : '' %>>PAAB01 - Compte d’attente</option>
+    <option value="PAAB02" <%= selectedComptes.includes('PAAB02') ? 'selected' : '' %>>PAAB02 - Compte capital</option>
+    <option value="PAAB03" <%= selectedComptes.includes('PAAB03') ? 'selected' : '' %>>PAAB03 - Compte intérieur</option>
+    <option value="PAAB04" <%= selectedComptes.includes('PAAB04') ? 'selected' : '' %>>PAAB04 - Compte spécial</option>
+    <option value="PAAB05" <%= selectedComptes.includes('PAAB05') ? 'selected' : '' %>>PAAB05 - Compte spécial emprunt</option>
+    <option value="PAAB06" <%= selectedComptes.includes('PAAB06') ? 'selected' : '' %>>PAAB06 - Non résidents Libyens (dinar)</option>
   </optgroup>
 
   <optgroup label="Comptes en devises">
-    <option value="PABA01">PABA01 - Dinar convertible</option>
-    <option value="PABA02">PABA02 - Compte en devises</option>
-    <option value="PABA06">PABA06 - Allocation touristique</option>
-    <option value="PABA09">PABA09 - Pro en dinar convertible</option>
-    <option value="PABA10">PABA10 - Pro en devises</option>
-    <option value="PABA11">PABA11 - Négoce international</option>
-    <option value="PABA12">PABA12 - PPR dinar convertible</option>
-    <option value="PABA13">PABA13 - PPR devise</option>
-    <option value="PABA14">PABA14 - Bureau de change</option>
-    <option value="PABA15">PABA15 - Startup devises</option>
+    <option value="PABA01" <%= selectedComptes.includes('PABA01') ? 'selected' : '' %>>PABA01 - Dinar convertible</option>
+    <option value="PABA02" <%= selectedComptes.includes('PABA02') ? 'selected' : '' %>>PABA02 - Compte en devises</option>
+    <option value="PABA06" <%= selectedComptes.includes('PABA06') ? 'selected' : '' %>>PABA06 - Allocation touristique</option>
+    <option value="PABA09" <%= selectedComptes.includes('PABA09') ? 'selected' : '' %>>PABA09 - Pro en dinar convertible</option>
+    <option value="PABA10" <%= selectedComptes.includes('PABA10') ? 'selected' : '' %>>PABA10 - Pro en devises</option>
+    <option value="PABA11" <%= selectedComptes.includes('PABA11') ? 'selected' : '' %>>PABA11 - Négoce international</option>
+    <option value="PABA12" <%= selectedComptes.includes('PABA12') ? 'selected' : '' %>>PABA12 - PPR dinar convertible</option>
+    <option value="PABA13" <%= selectedComptes.includes('PABA13') ? 'selected' : '' %>>PABA13 - PPR devise</option>
+    <option value="PABA14" <%= selectedComptes.includes('PABA14') ? 'selected' : '' %>>PABA14 - Bureau de change</option>
+    <option value="PABA15" <%= selectedComptes.includes('PABA15') ? 'selected' : '' %>>PABA15 - Startup devises</option>
   </optgroup>
 
   <optgroup label="Comptes étrangers">
-    <option value="PABB01">PABB01 - Étranger dinar convertible</option>
-    <option value="PABB02">PABB02 - Étranger devises</option>
-    <option value="PABB03">PABB03 - Non résidents Libyens (DC)</option>
-    <option value="PABB04">PABB04 - Non résidents Libyens (devise)</option>
-    <option value="PABB08">PABB08 - Société formation - DC</option>
-    <option value="PABB09">PABB09 - Augmentation capital - DC</option>
-    <option value="PABB10">PABB10 - Société formation - devise</option>
-    <option value="PABB11">PABB11 - Augmentation capital - devise</option>
+    <option value="PABB01" <%= selectedComptes.includes('PABB01') ? 'selected' : '' %>>PABB01 - Étranger dinar convertible</option>
+    <option value="PABB02" <%= selectedComptes.includes('PABB02') ? 'selected' : '' %>>PABB02 - Étranger devises</option>
+    <option value="PABB03" <%= selectedComptes.includes('PABB03') ? 'selected' : '' %>>PABB03 - Non résidents Libyens (DC)</option>
+    <option value="PABB04" <%= selectedComptes.includes('PABB04') ? 'selected' : '' %>>PABB04 - Non résidents Libyens (devise)</option>
+    <option value="PABB08" <%= selectedComptes.includes('PABB08') ? 'selected' : '' %>>PABB08 - Société formation - DC</option>
+    <option value="PABB09" <%= selectedComptes.includes('PABB09') ? 'selected' : '' %>>PABB09 - Augmentation capital - DC</option>
+    <option value="PABB10" <%= selectedComptes.includes('PABB10') ? 'selected' : '' %>>PABB10 - Société formation - devise</option>
+    <option value="PABB11" <%= selectedComptes.includes('PABB11') ? 'selected' : '' %>>PABB11 - Augmentation capital - devise</option>
   </optgroup>
 
   <optgroup label="Comptes techniques">
-    <option value="PABC01">PABC01 - Technique placement en devises</option>
+    <option value="PABC01" <%= selectedComptes.includes('PABC01') ? 'selected' : '' %>>PABC01 - Technique placement en devises</option>
   </optgroup>
 
   <optgroup label="Comptes épargne">
-    <option value="PBAA01">PBAA01 - Spécial épargne</option>
-    <option value="PBAA02">PBAA02 - Privilèges</option>
-    <option value="PBAB01">PBAB01 - Épargne logement dinars</option>
-    <option value="PBAB02">PBAB02 - Épargne logement DC</option>
-    <option value="PBAB03">PBAB03 - Épargne études</option>
-    <option value="PBAB04">PBAB04 - Épargne confort</option>
-    <option value="PBAB05">PBAB05 - Épargne investissement</option>
-    <option value="PBAB06">PBAB06 - Épargne actions</option>
-    <option value="PBAB07">PBAB07 - Épargne Projets</option>
-    <option value="PBAB08">PBAB08 - Épargne études DC</option>
+    <option value="PBAA01" <%= selectedComptes.includes('PBAA01') ? 'selected' : '' %>>PBAA01 - Spécial épargne</option>
+    <option value="PBAA02" <%= selectedComptes.includes('PBAA02') ? 'selected' : '' %>>PBAA02 - Privilèges</option>
+    <option value="PBAB01" <%= selectedComptes.includes('PBAB01') ? 'selected' : '' %>>PBAB01 - Épargne logement dinars</option>
+    <option value="PBAB02" <%= selectedComptes.includes('PBAB02') ? 'selected' : '' %>>PBAB02 - Épargne logement DC</option>
+    <option value="PBAB03" <%= selectedComptes.includes('PBAB03') ? 'selected' : '' %>>PBAB03 - Épargne études</option>
+    <option value="PBAB04" <%= selectedComptes.includes('PBAB04') ? 'selected' : '' %>>PBAB04 - Épargne confort</option>
+    <option value="PBAB05" <%= selectedComptes.includes('PBAB05') ? 'selected' : '' %>>PBAB05 - Épargne investissement</option>
+    <option value="PBAB06" <%= selectedComptes.includes('PBAB06') ? 'selected' : '' %>>PBAB06 - Épargne actions</option>
+    <option value="PBAB07" <%= selectedComptes.includes('PBAB07') ? 'selected' : '' %>>PBAB07 - Épargne Projets</option>
+    <option value="PBAB08" <%= selectedComptes.includes('PBAB08') ? 'selected' : '' %>>PBAB08 - Épargne études DC</option>
   </optgroup>
-
- 
 </select>
 
-
-        <label for="direction">Direction concernée :</label>
+<label for="direction">Direction concernée :</label>
 <select id="direction" name="direction" required>
-  <option value="">-- Sélectionner une direction --</option>
-  <option>Cellule Assistance DAD</option>
-  <option>Direction Administration Des Filiales</option>
-  <option>Direction Administration Et Contrôle Réseaux</option>
-  <option>Direction Animation Commerciale Corporate</option>
-  <option>Direction Animation Marche Des Particuliers & TRE</option>
-  <option>Direction Animation Marche Des Professionnels & TPE</option>
-  <option>Direction Backoffice Trésorerie</option>
-  <option>Direction Bâtiments & Entretiens</option>
-  <option>Direction Bien Être Social</option>
-  <option>Direction Caisse Centrale et Télécompensation</option>
-  <option>Direction Canaux Digitaux</option>
-  <option>Direction Centrale Analyse Credit</option>
-  <option>Direction Centrale Analyse Crédit</option>
-  <option>Direction Centrale Bo & Traitement Des Moyens De Paiement Domest</option>
-  <option>Direction Centrale Capitale Humain</option>
-  <option>Direction Centrale Commerciale Corporate</option>
-  <option>Direction Centrale Comptabilité</option>
-  <option>Direction Centrale Contrôle De Gestion</option>
-  <option>Direction Centrale de la Trésorerie</option>
-  <option>Direction Centrale Filiales Et Participation</option>
-  <option>Direction Centrale Gestion Capitale Humain</option>
-  <option>Direction Centrale Global Bancaire & Développement Digital</option>
-  <option>Direction Centrale Infrastructure & Support Systèmes D'Information</option>
-  <option>Direction Centrale Operations Internationales</option>
-  <option>Direction Centrale Réalisation Et Administration Des Crédits</option>
-  <option>Direction Centrale Résolution</option>
-  <option>Direction Centrale Rique Crédit</option>
-  <option>Direction Centrale Risque Opérationnel Et Marché & Contrôle Perm</option>
-  <option>Direction Centrale Réseau</option>
-  <option>Direction Commerce Exterieur</option>
-  <option>Direction Communication & Marketing</option>
-  <option>Direction Contrôle Comptable</option>
-  <option>Direction Contrôle De Gestion</option>
-  <option>Direction Contrôle Des Dépenses</option>
-  <option>Direction Contrôle Permanant</option>
-  <option>Direction Contrôle Reglementaire</option>
-  <option>Direction de Contrôle des Engagements</option>
-  <option>Direction de la Fiscalité</option>
-  <option>Direction De La Qualité</option>
-  <option>Direction Développement Commercial International</option>
-  <option>Direction Developpement Digital</option>
-  <option>Direction Developpement Et Etudes</option>
-  <option>Direction Développement Et Gestion De Carrière</option>
-  <option>Direction Données Analytiques</option>
-  <option>Direction Elaboration Etats Financiers et reporting</option>
-  <option>Direction Engagement Par Signature</option>
-  <option>Direction Evaluation Du Risque Crédit & Reporting</option>
-  <option>Direction Gestion Capitale Humain</option>
-  <option>Direction GGEI</option>
-  <option>Direction Global Bancaire Urbanisé</option>
-  <option>Direction Gouvernance  Deontologie & Controle De La Conformite</option>
-  <option>Direction Infrastructure Digitale</option>
-  <option>Direction AMOA</option>
-  <option>Direction Mobilisation Ressources</option>
-  <option>Direction Moyens De Paiement</option>
+  <option disabled value="">-- Sélectionner une direction --</option>
+
+  <% const currentDir = data?.direction?.trim(); %>
+  <option <%= currentDir === 'Cellule Assistance DAD' ? 'selected' : '' %>>Cellule Assistance DAD</option>
+  <option <%= currentDir === 'Direction Administration Des Filiales' ? 'selected' : '' %>>Direction Administration Des Filiales</option>
+  <option <%= currentDir === 'Direction Administration Et Contrôle Réseaux' ? 'selected' : '' %>>Direction Administration Et Contrôle Réseaux</option>
+  <option <%= currentDir === 'Direction Animation Commerciale Corporate' ? 'selected' : '' %>>Direction Animation Commerciale Corporate</option>
+  <option <%= currentDir === 'Direction Animation Marche Des Particuliers & TRE' ? 'selected' : '' %>>Direction Animation Marche Des Particuliers & TRE</option>
+  <option <%= currentDir === 'Direction Animation Marche Des Professionnels & TPE' ? 'selected' : '' %>>Direction Animation Marche Des Professionnels & TPE</option>
+  <option <%= currentDir === 'Direction Backoffice Trésorerie' ? 'selected' : '' %>>Direction Backoffice Trésorerie</option>
+  <option <%= currentDir === 'Direction Bâtiments & Entretiens' ? 'selected' : '' %>>Direction Bâtiments & Entretiens</option>
+  <option <%= currentDir === 'Direction Bien Être Social' ? 'selected' : '' %>>Direction Bien Être Social</option>
+  <option <%= currentDir === 'Direction Caisse Centrale et Télécompensation' ? 'selected' : '' %>>Direction Caisse Centrale et Télécompensation</option>
+  <option <%= currentDir === 'Direction Canaux Digitaux' ? 'selected' : '' %>>Direction Canaux Digitaux</option>
+  <option <%= currentDir === 'Direction Centrale Analyse Credit' ? 'selected' : '' %>>Direction Centrale Analyse Credit</option>
+  <option <%= currentDir === 'Direction Centrale Analyse Crédit' ? 'selected' : '' %>>Direction Centrale Analyse Crédit</option>
+  <option <%= currentDir === 'Direction Centrale Bo & Traitement Des Moyens De Paiement Domest' ? 'selected' : '' %>>Direction Centrale Bo & Traitement Des Moyens De Paiement Domest</option>
+  <option <%= currentDir === 'Direction Centrale Capitale Humain' ? 'selected' : '' %>>Direction Centrale Capitale Humain</option>
+  <option <%= currentDir === 'Direction Centrale Commerciale Corporate' ? 'selected' : '' %>>Direction Centrale Commerciale Corporate</option>
+  <option <%= currentDir === 'Direction Centrale Comptabilité' ? 'selected' : '' %>>Direction Centrale Comptabilité</option>
+  <option <%= currentDir === 'Direction Centrale Contrôle De Gestion' ? 'selected' : '' %>>Direction Centrale Contrôle De Gestion</option>
+  <option <%= currentDir === 'Direction Centrale de la Trésorerie' ? 'selected' : '' %>>Direction Centrale de la Trésorerie</option>
+  <option <%= currentDir === 'Direction Centrale Filiales Et Participation' ? 'selected' : '' %>>Direction Centrale Filiales Et Participation</option>
+  <option <%= currentDir === 'Direction Centrale Gestion Capitale Humain' ? 'selected' : '' %>>Direction Centrale Gestion Capitale Humain</option>
+  <option <%= currentDir === 'Direction Centrale Global Bancaire & Développement Digital' ? 'selected' : '' %>>Direction Centrale Global Bancaire & Développement Digital</option>
+  <option <%= currentDir === "Direction Centrale Infrastructure & Support Systèmes D'Information" ? 'selected' : '' %>>Direction Centrale Infrastructure & Support Systèmes D'Information</option>
+  <option <%= currentDir === 'Direction Centrale Operations Internationales' ? 'selected' : '' %>>Direction Centrale Operations Internationales</option>
+  <option <%= currentDir === 'Direction Centrale Réalisation Et Administration Des Crédits' ? 'selected' : '' %>>Direction Centrale Réalisation Et Administration Des Crédits</option>
+  <option <%= currentDir === 'Direction Centrale Résolution' ? 'selected' : '' %>>Direction Centrale Résolution</option>
+  <option <%= currentDir === 'Direction Centrale Rique Crédit' ? 'selected' : '' %>>Direction Centrale Rique Crédit</option>
+  <option <%= currentDir === 'Direction Centrale Risque Opérationnel Et Marché & Contrôle Perm' ? 'selected' : '' %>>Direction Centrale Risque Opérationnel Et Marché & Contrôle Perm</option>
+  <option <%= currentDir === 'Direction Centrale Réseau' ? 'selected' : '' %>>Direction Centrale Réseau</option>
+  <option <%= currentDir === 'Direction Commerce Exterieur' ? 'selected' : '' %>>Direction Commerce Exterieur</option>
+  <option <%= currentDir === 'Direction Communication & Marketing' ? 'selected' : '' %>>Direction Communication & Marketing</option>
+  <option <%= currentDir === 'Direction Contrôle Comptable' ? 'selected' : '' %>>Direction Contrôle Comptable</option>
+  <option <%= currentDir === 'Direction Contrôle De Gestion' ? 'selected' : '' %>>Direction Contrôle De Gestion</option>
+  <option <%= currentDir === 'Direction Contrôle Des Dépenses' ? 'selected' : '' %>>Direction Contrôle Des Dépenses</option>
+  <option <%= currentDir === 'Direction Contrôle Permanant' ? 'selected' : '' %>>Direction Contrôle Permanant</option>
+  <option <%= currentDir === 'Direction Contrôle Reglementaire' ? 'selected' : '' %>>Direction Contrôle Reglementaire</option>
+  <option <%= currentDir === 'Direction de Contrôle des Engagements' ? 'selected' : '' %>>Direction de Contrôle des Engagements</option>
+  <option <%= currentDir === 'Direction de la Fiscalité' ? 'selected' : '' %>>Direction de la Fiscalité</option>
+  <option <%= currentDir === 'Direction De La Qualité' ? 'selected' : '' %>>Direction De La Qualité</option>
+  <option <%= currentDir === 'Direction Développement Commercial International' ? 'selected' : '' %>>Direction Développement Commercial International</option>
+  <option <%= currentDir === 'Direction Developpement Digital' ? 'selected' : '' %>>Direction Developpement Digital</option>
+  <option <%= currentDir === 'Direction Developpement Et Etudes' ? 'selected' : '' %>>Direction Developpement Et Etudes</option>
+  <option <%= currentDir === 'Direction Développement Et Gestion De Carrière' ? 'selected' : '' %>>Direction Développement Et Gestion De Carrière</option>
+  <option <%= currentDir === 'Direction Données Analytiques' ? 'selected' : '' %>>Direction Données Analytiques</option>
+  <option <%= currentDir === 'Direction Elaboration Etats Financiers et reporting' ? 'selected' : '' %>>Direction Elaboration Etats Financiers et reporting</option>
+  <option <%= currentDir === 'Direction Engagement Par Signature' ? 'selected' : '' %>>Direction Engagement Par Signature</option>
+  <option <%= currentDir === 'Direction Evaluation Du Risque Crédit & Reporting' ? 'selected' : '' %>>Direction Evaluation Du Risque Crédit & Reporting</option>
+  <option <%= currentDir === 'Direction Gestion Capitale Humain' ? 'selected' : '' %>>Direction Gestion Capitale Humain</option>
+  <option <%= currentDir === 'Direction GGEI' ? 'selected' : '' %>>Direction GGEI</option>
+  <option <%= currentDir === 'Direction Global Bancaire Urbanisé' ? 'selected' : '' %>>Direction Global Bancaire Urbanisé</option>
+  <option <%= currentDir === 'Direction Gouvernance  Deontologie & Controle De La Conformite' ? 'selected' : '' %>>Direction Gouvernance  Deontologie & Controle De La Conformite</option>
+  <option <%= currentDir === 'Direction Infrastructure Digitale' ? 'selected' : '' %>>Direction Infrastructure Digitale</option>
+  <option <%= currentDir === 'Direction AMOA' ? 'selected' : '' %>>Direction AMOA</option>
+  <option <%= currentDir === 'Direction Mobilisation Ressources' ? 'selected' : '' %>>Direction Mobilisation Ressources</option>
+  <option <%= currentDir === 'Direction Moyens De Paiement' ? 'selected' : '' %>>Direction Moyens De Paiement</option>
 </select>
 
+<label for="charge">Chargé :</label>
+<input type="text" id="charge" name="charge" required value="<%= data?.charge || '' %>">
+    <!-- Chaque champ reprendra sa logique avec <%= data?.champ %> comme valeur initiale -->
 
-        <label for="charge">Chargé :</label>
-        <input type="text" id="charge" name="charge" required>
+<label for="validation_processus">Validation :</label>
+<select id="validation_processus" name="validation_processus">
+  <option value="">-- Choisir --</option>
+  <option value="oui">Oui</option>
+  <option value="non">Non</option>
+</select>
 
-        <!-- Bouton -->
-        <button type="submit">Soumettre</button>
-    </form>
-
-    
+    <button type="submit">Soumettre</button>
+  </form>
 </body>
 </html>

@@ -1,16 +1,22 @@
+// ✅ server.js modifié et corrigé
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const PDFDocument = require('pdfkit');
 const fs = require('fs');
+const pdfParse = require('pdf-parse');
+const PDFDocument = require('pdfkit');
+const { formidable } = require('formidable');
 
 const app = express();
-const port = process.env.PORT || 3000; // ✅ nécessaire pour Render
+const port = process.env.PORT || 3000;
 
-// Fonction utilitaire
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
 const getValue = (val) => (val && val.trim ? val.trim() : 'Néant');
 
-// Fonction pour dessiner l'en-tête avec le logo centré
 function drawHeader(doc, logoPath) {
   const logoWidth = 150;
   const pageWidth = doc.page.width;
@@ -37,26 +43,73 @@ function drawHeader(doc, logoPath) {
   doc.moveDown(2);
 }
 
-// Configuration Express
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Route GET pour afficher le formulaire
 app.get('/', (req, res) => {
-  res.render('formulaire');
+  res.render('index');
 });
 
-// Route POST pour générer et envoyer le PDF
+app.post('/upload-pdf', (req, res) => {
+  const form = formidable({
+    multiples: false,
+    keepExtensions: true,
+    uploadDir: path.join(__dirname, 'uploads')
+  });
+
+  form.parse(req, async (err, fields, files) => {
+    if (err) return res.status(500).send("Erreur lors de l'analyse du fichier PDF.");
+
+    const pdfFile = files.pdfFile?.[0] || files.pdfFile;
+    if (!pdfFile || !pdfFile.filepath) {
+      return res.status(400).send("Fichier PDF non reçu.");
+    }
+
+    const dataBuffer = fs.readFileSync(pdfFile.filepath);
+    const pdfText = (await pdfParse(dataBuffer)).text;
+
+    const extract = (label) => {
+      const regex = new RegExp(label + '\\s*([^\\n]*)');
+      const match = pdfText.match(regex);
+      return match ? match[1].trim() : '';
+    };
+
+    const data = {
+      code: extract("Code d'opération"),
+      libelle: extract("Libellé de l'opération"),
+      nature: extract("Nature de type opération"),
+      effet: extract("Effet d'opération"),
+      descriptif: extract("Descriptif de l'opération"),
+      signe: extract("Signe de l'opération"),
+      destination: extract("Destination de l'opération"),
+      type_impact: extract("Type d'impact"),
+      debit_credit_immediat: extract("Débit/Crédit immédiat"),
+      autoriser_paiement_partiel: extract("Autoriser le paiement partiel"),
+      type_annulation: extract("Type opération d'annulation"),
+      type_rejet: extract("Type opération de rejet"),
+      type_interne_recue: extract("Type opération interne reçue"),
+      devise: extract("Devise"),
+      application_tva: extract("Application TVA"),
+      activation_compte: extract("Opération qui active le compte"),
+      reserve_blocage: extract("Réserve opération de blocage"),
+      operation_force: extract("Opération soumise au forçage"),
+      validation_processus: extract("validation"),
+      dereserve_agios: extract("Déréservé AGIOS"),
+      regle_conversion: extract("Règle de conversion"),
+      envoi_sdm: extract("Envoi à la SDM en fin de journée"),
+      comptes_compatibles: ['PAAA01', 'PAAA02', 'PAAA04', 'PAAA06', 'PAAA09'],
+      direction: extract("Direction concernée"),
+      charge: extract("Chargé")
+    };
+
+    res.render('formulaire', { data });
+  });
+});
+
 app.post('/submit', (req, res) => {
   const data = req.body;
   const doc = new PDFDocument({ size: 'A4', margin: 50 });
 
-  // Créez le nom du fichier PDF en concaténant le code et le libellé
   const operationCode = getValue(data.code).replace(/[^a-zA-Z0-9_-]/g, '_');
   const operationLabel = getValue(data.libelle).replace(/[^a-zA-Z0-9_-]/g, '_');
-  const pdfFilename = `${operationCode}_${operationLabel}.pdf`; // Code et libellé concaténés
+  const pdfFilename = `${operationCode}_${operationLabel}.pdf`;
   const pdfPath = path.join(__dirname, 'exports', pdfFilename);
   const logoPath = path.join(__dirname, 'public/images/logo.jpg');
 
@@ -89,12 +142,12 @@ app.post('/submit', (req, res) => {
     ["Devise", data.devise],
     ["Application TVA", data.application_tva],
     ["Opération qui active le compte", data.activation_compte],
-  ["Réserve opération de blocage", data.reserve_blocage],
-  ["Opération soumise au forçage", data.operation_force],
-  ["Opération soumise à un processus de validation", data.validation_processus],
-  ["Déréservé AGIOS", data.dereserve_agios],
-  ["Règle de conversion", data.regle_conversion],
-  ["Envoi à la SDM en fin de journée", data.envoi_sdm],
+    ["Réserve opération de blocage", data.reserve_blocage],
+    ["Opération soumise au forçage", data.operation_force],
+    ["Opération soumise à un processus de validation", data.validation_processus],
+    ["Déréservé AGIOS", data.dereserve_agios],
+    ["Règle de conversion", data.regle_conversion],
+    ["Envoi à la SDM en fin de journée", data.envoi_sdm],
     ["Nature des comptes compatibles", Array.isArray(data.comptes_compatibles) ? data.comptes_compatibles.join('\n') : getValue(data.comptes_compatibles)],
     ["Direction concernée", data.direction, true],
     ["Chargé", data.charge, true]
@@ -161,7 +214,6 @@ app.post('/submit', (req, res) => {
   doc.end();
 });
 
-// Lancement du serveur
 app.listen(port, () => {
-  console.log(`✅ Serveur démarré : http://localhost:${port}`);
+  console.log(`✅ Serveur en cours sur http://localhost:${port}`);
 });

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Charger un PDF</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #003366;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: inline-block;
+    }
+
+    input[type="file"] {
+      margin-top: 15px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+  <h1>📄 Charger un fichier PDF</h1>
+  <form action="/upload-pdf" method="POST" enctype="multipart/form-data">
+    <input type="file" name="pdfFile" accept="application/pdf" required>
+    
+    <br>
+    <button type="submit">Analyser et remplir le formulaire</button>
+  </form>
+</body>
+</html>
